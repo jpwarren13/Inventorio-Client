@@ -1,21 +1,16 @@
+FROM node:11.2.0-alpine as builder
 
-FROM node:11.2.0
-
-# Create app directory
-
+RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
-# Install app dependencies
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
-# where available (npm@5+)
-COPY package*.json ./
-
+COPY package.json .
 RUN npm install
-# If you are building your code for production
-# RUN npm install --only=production
 
-# Bundle app source
 COPY . .
+RUN npm run build
 
-EXPOSE 3000
-CMD [ "npm", "start" ]
+FROM nginx:alpine
+COPY --from=builder /usr/src/app/build /usr/share/nginx/html
+COPY ./default.conf /etc/nginx/conf.d/default.conf
+
+EXPOSE 80
