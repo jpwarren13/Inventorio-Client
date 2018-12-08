@@ -17,7 +17,7 @@
   "containerDefinitions": [
     {
       "name": "inventorio",
-      "image": "jpwarren13/inventor-io:latest",
+      "image": "jpwarren13/inventorio-api:latest",
       "essential": true,
       "memory": 128,
       "mountPoints": [
@@ -29,8 +29,8 @@
       ]
     },
     {
-      "name": "nginx-proxy",
-      "image": "nginx",
+      "name": "inventorio-client",
+      "image": "jpwarren13/inventorio-client:latest",
       "essential": true,
       "memory": 128,
       "portMappings": [
@@ -47,7 +47,7 @@
           "readOnly": true
         },
         {
-          "sourceVolume": "nginx-proxy-conf",
+          "sourceVolume": "inventorio-client",
           "containerPath": "/etc/nginx/conf.d",
           "readOnly": true
         },
